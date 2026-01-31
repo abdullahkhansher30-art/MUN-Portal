@@ -30,7 +30,7 @@
 <div class="portal-card">
   <h2>The Secretariat</h2>
   <div class="line"></div>
-  <p class="subtitle">Official Allocation Search</p>
+  <p class="subtitle">Official Delegate Allocation Search</p>
   <input type="text" id="nameInput" placeholder="Enter Full Name..." onkeypress="if(event.key==='Enter') executeSearch()">
   <button onclick="executeSearch()">REVEAL ALLOCATION</button>
   <div id="result"></div>
@@ -43,20 +43,31 @@
     "Indonesia": "id", "Mexico": "mx", "UAE": "ae", "Spain": "es", "Norway": "no", "Egypt": "eg",
     "Italy": "it", "Argentina": "ar", "Netherlands": "nl", "Canada": "ca", "Israel": "il",
     "Palestine": "ps", "Syria": "sy", "Yemen": "ye", "Iraq": "iq", "Iran": "ir", "China": "cn",
-    "Russia": "ru", "Pakistan": "pk", "Australia": "au", "Sweden": "se", "Philippines": "ph", "Somalia": "so"
+    "Russia": "ru", "Pakistan": "pk", "Australia": "au", "Sweden": "se", "Philippines": "ph", 
+    "Kuwait": "kw", "Qatar": "qa", "Oman": "om", "Jordan": "jo", "Lebanon": "lb", "Sudan": "sd", "Ukraine": "ua"
   };
 
   const topics = {
     "UNSC": "The Escalating Conflict between Israel and Iran",
-    "PNA": "Strengthening Civilian Supremacy and Parliamentary Oversight in Pakistan"
+    "PNA": "Strengthening Civilian Supremacy and Parliamentary Oversight in Pakistan",
+    "CRISIS": "Dynamic Cabinet Crisis: Territorial Integrity and Sovereignty"
   };
 
   const delegates = [
+    // CRISIS
+    {n: "Khushbakht", c: "Russia", cm: "CRISIS"},
+    {n: "Mashaal Ahmed", c: "Ukraine", cm: "CRISIS"},
+    {n: "Manha Ahmed", c: "United States", cm: "CRISIS"},
+    {n: "Twaha", c: "Germany", cm: "CRISIS"},
+    {n: "Hanzala", c: "Germany", cm: "CRISIS"},
+    {n: "Hamza", c: "Germany", cm: "CRISIS"},
+
+    // UNSC
     {n: "Musa Khan Jamil", c: "United States", cm: "UNSC"},
     {n: "Azaan Usman", c: "United Kingdom", cm: "UNSC"},
     {n: "Ansar Asad", c: "Norway", cm: "UNSC"},
     {n: "Hira Afzal Marwat", c: "Germany", cm: "UNSC"},
-    {n: "Wadana Malik", c: "India", cm: "UNSC"},
+    {n: "Wadana Malik", c: "Kuwait", cm: "UNSC"},
     {n: "Eman Khan", c: "Japan", cm: "UNSC"},
     {n: "Maleeha Bahrmand", c: "Turkey", cm: "UNSC"},
     {n: "Ayesha Ahmad", c: "Brazil", cm: "UNSC"},
@@ -68,10 +79,6 @@
     {n: "Qazi Muhammad Musa", c: "Spain", cm: "UNSC"},
     {n: "Abiha Saeed", c: "France", cm: "UNSC"},
     {n: "Sana Mehmood", c: "Egypt", cm: "UNSC"},
-    {n: "Zainab Hammad", c: "Italy", cm: "UNSC"},
-    {n: "Fatima Zahid", c: "Argentina", cm: "UNSC"},
-    {n: "KhushBakht", c: "Netherlands", cm: "UNSC"},
-    {n: "Mashal", c: "Canada", cm: "UNSC"},
     {n: "Urooj Qazi", c: "Israel", cm: "UNSC"},
     {n: "Ali Khan Rehman", c: "Palestine", cm: "UNSC"},
     {n: "Muhammad Shafi", c: "Syria", cm: "UNSC"},
@@ -84,10 +91,39 @@
     {n: "Muhammad bin Ahsan", c: "Australia", cm: "UNSC"},
     {n: "Rahima Waqas", c: "Sweden", cm: "UNSC"},
     {n: "Maham Naveed", c: "Philippines", cm: "UNSC"},
+    {n: "Zainab Hammad", c: "Qatar", cm: "UNSC"},
+    {n: "Fatima Zahid", c: "Qatar", cm: "UNSC"},
+    {n: "Eshal Waqas", c: "Oman", cm: "UNSC"},
+    {n: "Hareem Khan", c: "Oman", cm: "UNSC"},
+    {n: "Maham Khan", c: "Oman", cm: "UNSC"},
+    {n: "Khirad Parsa", c: "Oman", cm: "UNSC"},
+    {n: "Sama Safdar", c: "Oman", cm: "UNSC"},
+    {n: "Haroon", c: "Jordan", cm: "UNSC"},
+    {n: "Ibrahim", c: "Jordan", cm: "UNSC"},
+    {n: "Hamza", c: "Jordan", cm: "UNSC"},
+    {n: "Ahmad Kamran", c: "Jordan", cm: "UNSC"},
+    {n: "Abdullah Haider", c: "Jordan", cm: "UNSC"},
+    {n: "Anooshay", c: "Lebanon", cm: "UNSC"},
+    {n: "Sara", c: "Lebanon", cm: "UNSC"},
+    {n: "Fatima", c: "Lebanon", cm: "UNSC"},
+    {n: "Eshal", c: "Lebanon", cm: "UNSC"},
+    {n: "Ishmal", c: "Lebanon", cm: "UNSC"},
+    {n: "Araiz", c: "Sudan", cm: "UNSC"},
+    {n: "Muhammad Ahmad", c: "Sudan", cm: "UNSC"},
+    {n: "Inzala", c: "Sudan", cm: "UNSC"},
+    {n: "Brishna", c: "Sudan", cm: "UNSC"},
+    {n: "Hania", c: "Sudan", cm: "UNSC"},
+    {n: "Ayan Waqas", c: "Ukraine", cm: "UNSC"},
+    {n: "Umar Khan", c: "Ukraine", cm: "UNSC"},
+    {n: "Hussain", c: "Ukraine", cm: "UNSC"},
+    {n: "Subhan", c: "Ukraine", cm: "UNSC"},
+    {n: "Ibrahim", c: "Ukraine", cm: "UNSC"},
+
+    // PNA
     {n: "Zargay Khan", c: "Nawaz Sharif", cm: "PNA"},
     {n: "Musab Mahar", c: "Shehbaz Sharif", cm: "PNA"},
     {n: "Eshal Zubair", c: "Bilawal Bhutto Zardari", cm: "PNA"},
-    {n: "Adan Khalid", c: "Maryam Nawaz", cm: "PNA"},
+    {n: "Adan Khalid", c: "Syed Murad Ali Shah", cm: "PNA"},
     {n: "Muhammad Yousaf", c: "Shah Mahmood Qureshi", cm: "PNA"},
     {n: "Mian Muhammad Ahyan Khan", c: "Asad Umar", cm: "PNA"},
     {n: "Sannan Majeed", c: "Imran Khan", cm: "PNA"},
@@ -95,7 +131,16 @@
     {n: "Azmar Khan", c: "Fawad Chaudhry", cm: "PNA"},
     {n: "Arbab AbdurRehman Khan", c: "Asif Ali Zardari", cm: "PNA"},
     {n: "Muhammad Umar Khan", c: "Ali Amin Gandapur", cm: "PNA"},
-    {n: "Muhammad Ayan Shahid Shams", c: "Hamza Shahbaz", cm: "PNA"}
+    {n: "Muhammad Ayan Shahid Shams", c: "Hamza Shahbaz", cm: "PNA"},
+    {n: "Eshal Babar", c: "Maryam Nawaz", cm: "PNA"},
+    {n: "Ehsan Javed", c: "Attaullah Tarar", cm: "PNA"},
+    {n: "Sudais", c: "Murad Saeed", cm: "PNA"},
+    {n: "Sinan", c: "Murad Saeed", cm: "PNA"},
+    {n: "Huzaifa", c: "Murad Saeed", cm: "PNA"},
+    {n: "Umar Jamal", c: "Murad Saeed", cm: "PNA"},
+    {n: "Azan", c: "Faisal Karim Kundi", cm: "PNA"},
+    {n: "Ahmed Shah", c: "Faisal Karim Kundi", cm: "PNA"},
+    {n: "Rayyan", c: "Faisal Karim Kundi", cm: "PNA"}
   ];
 
   function executeSearch() {
