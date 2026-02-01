@@ -45,7 +45,8 @@
     "Palestine": "ps", "Syria": "sy", "Yemen": "ye", "Iraq": "iq", "Iran": "ir", "China": "cn",
     "Russia": "ru", "Pakistan": "pk", "Australia": "au", "Sweden": "se", "Philippines": "ph", 
     "Kuwait": "kw", "Qatar": "qa", "Oman": "om", "Jordan": "jo", "Lebanon": "lb", "Sudan": "sd", 
-    "Ukraine": "ua", "Vietnam": "vn", "Bahrain": "bh", "Belgium": "be", "Denmark": "dk", "Malaysia": "my"
+    "Ukraine": "ua", "Vietnam": "vn", "Bahrain": "bh", "Belgium": "be", "Denmark": "dk", 
+    "Malaysia": "my", "Afghanistan": "af"
   };
 
   const topics = {
@@ -55,16 +56,17 @@
   };
 
   const delegates = [
-    // CRISIS
+    // CRISIS (Updated)
     {n: "Khushbakht", c: "Russia", cm: "CRISIS"},
-    {n: "Mashaal Ahmed", c: "Ukraine", cm: "CRISIS"},
+    {n: "Mashaal Ahmed", c: "Russia", cm: "CRISIS"},
     {n: "Manha Ahmed", c: "United States", cm: "CRISIS"},
     {n: "Twaha", c: "Germany", cm: "CRISIS"},
     {n: "Hanzala", c: "Germany", cm: "CRISIS"},
     {n: "Hamza", c: "Germany", cm: "CRISIS"},
-    {n: "Mustafa shah", c: "China", cm: "CRISIS"},
+    {n: "Mustafa Shah", c: "China", cm: "CRISIS"},
     {n: "Numair Ahmed", c: "United Kingdom", cm: "CRISIS"},
-    {n: "Maria faisal", c: "France", cm: "CRISIS"},
+    {n: "Maria Faisal", c: "France", cm: "CRISIS"},
+    {n: "Heela Khan", c: "Ukraine", cm: "CRISIS"},
 
     // UNSC
     {n: "Musa Khan Jamil", c: "United States", cm: "UNSC"},
@@ -83,6 +85,8 @@
     {n: "Qazi Muhammad Musa", c: "Spain", cm: "UNSC"},
     {n: "Abiha Saeed", c: "France", cm: "UNSC"},
     {n: "Sana Mehmood", c: "Egypt", cm: "UNSC"},
+    {n: "Zainab Hammad", c: "Italy", cm: "UNSC"},
+    {n: "Fatima Zahid", c: "Argentina", cm: "UNSC"},
     {n: "Urooj Qazi", c: "Israel", cm: "UNSC"},
     {n: "Ali Khan Rehman", c: "Palestine", cm: "UNSC"},
     {n: "Muhammad Shafi", c: "Syria", cm: "UNSC"},
@@ -103,14 +107,14 @@
     {n: "Khirad Parsa", c: "Oman", cm: "UNSC"},
     {n: "Sama Safdar", c: "Oman", cm: "UNSC"},
     {n: "Haroon", c: "Jordan", cm: "UNSC"},
-    {n: "Ibrahim", c: "Jordan", cm: "UNSC"},
-    {n: "Hamza", c: "Jordan", cm: "UNSC"},
+    {n: "Ibrahim (Sr I)", c: "Jordan", cm: "UNSC"},
+    {n: "Hamza (nowshera)", c: "Jordan", cm: "UNSC"},
     {n: "Ahmad Kamran", c: "Jordan", cm: "UNSC"},
     {n: "Abdullah Haider", c: "Jordan", cm: "UNSC"},
     {n: "Anooshay", c: "Lebanon", cm: "UNSC"},
     {n: "Sara", c: "Lebanon", cm: "UNSC"},
-    {n: "Fatima", c: "Lebanon", cm: "UNSC"},
-    {n: "Eshal", c: "Lebanon", cm: "UNSC"},
+    {n: "Fatima (Sr I)", c: "Lebanon", cm: "UNSC"},
+    {n: "Eshal (Sr I)", c: "Lebanon", cm: "UNSC"},
     {n: "Ishmal", c: "Lebanon", cm: "UNSC"},
     {n: "Araiz", c: "Sudan", cm: "UNSC"},
     {n: "Muhammad Ahmad", c: "Sudan", cm: "UNSC"},
@@ -121,14 +125,14 @@
     {n: "Umar Khan", c: "Ukraine", cm: "UNSC"},
     {n: "Hussain", c: "Ukraine", cm: "UNSC"},
     {n: "Subhan", c: "Ukraine", cm: "UNSC"},
-    {n: "Ibrahim", c: "Ukraine", cm: "UNSC"},
-    {n: "Sami Ul Haq", c: "Vietnam", cm: "UNSC"},
+    {n: "Ibrahim (Prep III)", c: "Ukraine", cm: "UNSC"},
     {n: "Behraam Shah", c: "Bahrain", cm: "UNSC"},
     {n: "Afnan Ashraf", c: "Belgium", cm: "UNSC"},
     {n: "Areesha Rehman", c: "Denmark", cm: "UNSC"},
     {n: "Hareem Fawad", c: "India", cm: "UNSC"},
     {n: "Afnan KHAN", c: "Malaysia", cm: "UNSC"},
     {n: "Syed Hamza", c: "Netherlands", cm: "UNSC"},
+    {n: "Abdul Mohemin", c: "Afghanistan", cm: "UNSC"},
 
     // PNA
     {n: "Zargay Khan", c: "Nawaz Sharif", cm: "PNA"},
@@ -152,7 +156,7 @@
     {n: "Azan", c: "Faisal Karim Kundi", cm: "PNA"},
     {n: "Ahmed Shah", c: "Faisal Karim Kundi", cm: "PNA"},
     {n: "Rayyan", c: "Faisal Karim Kundi", cm: "PNA"},
-    {n: "Haseeb Durrani", c: "Asif Ali Zardari", cm: "PNA"},
+    {n: "Haseeb Durrani", c: "General Faiz Hameed", cm: "PNA"},
     {n: "Nasim Pakhtoonyar", c: "Parvez Khattak", cm: "PNA"},
     {n: "Azlan Waqar", c: "Rana Sanaullah", cm: "PNA"},
     {n: "Muhammad Sudais", c: "Saad Rafique", cm: "PNA"}
