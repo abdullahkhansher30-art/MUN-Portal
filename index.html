@@ -1,185 +1,472 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Delegate Portal | Peshawar MUN</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    :root { --primary: #1a2a6c; --accent: #c9a050; --bg: #f8f9fa; --white: #ffffff; }
-    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-    body { font-family: 'Inter', sans-serif; background-color: var(--bg); margin: 0; padding: 20px 10px; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; }
-    .portal-card { background: var(--white); padding: 35px 25px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); width: 100%; max-width: 420px; text-align: center; border-bottom: 6px solid var(--accent); animation: pageIn 0.6s ease-out; }
-    h2 { font-family: 'Playfair Display', serif; color: var(--primary); font-size: 26px; margin: 0 0 10px 0; }
-    .line { width: 45px; height: 3px; background: var(--accent); margin: 0 auto 20px; border-radius: 2px; }
-    .subtitle { color: #666; font-size: 13px; margin-bottom: 25px; }
-    input { width: 100%; padding: 15px; border: 2px solid #eef0f2; border-radius: 12px; font-size: 16px; outline: none; background: #fdfdfd; margin-bottom: 15px; }
-    button { background: var(--primary); color: white; border: none; padding: 16px; width: 100%; border-radius: 12px; font-weight: 600; font-size: 14px; letter-spacing: 1.5px; cursor: pointer; transition: 0.3s; }
-    #result { margin-top: 25px; padding: 20px; border-radius: 15px; display: none; text-align: left; background: #fcfcfc; border: 1px solid #eee; }
-    .label { font-size: 9px; text-transform: uppercase; color: var(--accent); font-weight: 800; letter-spacing: 1.2px; margin-bottom: 6px; }
-    .val { font-size: 17px; font-weight: 600; color: var(--primary); margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
-    .topic-box { font-size: 13px; color: #444; line-height: 1.5; background: #fff; padding: 12px; border-radius: 10px; border-left: 4px solid var(--accent); font-style: italic; }
-    .flag-img { width: 24px; height: auto; border: 1px solid #eee; }
-    .comm-icon { color: var(--accent); font-size: 16px; width: 20px; text-align: center; }
-    @keyframes pageIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Delegate Portal | Peshawar MUN</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+  :root {
+    --deep: #0a0e1a;
+    --panel: #111827;
+    --panel-light: #1a2236;
+    --gold: #c9a050;
+    --gold-dim: rgba(201,160,80,0.15);
+    --gold-glow: rgba(201,160,80,0.35);
+    --text: #e2e6ed;
+    --text-dim: #6b7a94;
+    --accent-blue: #3b82f6;
+    --white: #ffffff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: 'Rajdhani', sans-serif;
+    background: var(--deep);
+    min-height: 100vh;
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* ─── AMBIENT BG ─── */
+  .bg-orb {
+    position: fixed; border-radius: 50%; filter: blur(120px); pointer-events: none; z-index: 0;
+  }
+  .orb-1 { width: 500px; height: 500px; background: rgba(201,160,80,0.06); top: -120px; left: -100px; }
+  .orb-2 { width: 400px; height: 400px; background: rgba(59,130,246,0.05); bottom: -80px; right: -80px; }
+  .orb-3 { width: 300px; height: 300px; background: rgba(201,160,80,0.04); top: 50%; left: 50%; transform: translate(-50%,-50%); }
+
+  /* ─── LAYOUT ─── */
+  .page {
+    position: relative; z-index: 1;
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center;
+    padding: 40px 16px 60px;
+  }
+
+  /* ─── HEADER ─── */
+  .header { text-align: center; margin-bottom: 38px; }
+  .header-crest {
+    width: 56px; height: 56px; margin: 0 auto 18px;
+    border: 1.5px solid var(--gold);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--gold-dim);
+    animation: crестPulse 3s ease-in-out infinite;
+  }
+  .header-crest i { color: var(--gold); font-size: 22px; }
+  @keyframes crестPulse {
+    0%,100% { box-shadow: 0 0 0 0 var(--gold-glow); }
+    50% { box-shadow: 0 0 18px 4px var(--gold-glow); }
+  }
+  .header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300; font-size: 38px; letter-spacing: 6px;
+    text-transform: uppercase; color: var(--white);
+    margin-bottom: 6px;
+  }
+  .header .divider {
+    width: 60px; height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 12px auto;
+  }
+  .header .sub {
+    font-size: 13px; font-weight: 300; letter-spacing: 3.5px;
+    text-transform: uppercase; color: var(--text-dim);
+  }
+
+  /* ─── CARD ─── */
+  .card {
+    width: 100%; max-width: 440px;
+    background: var(--panel);
+    border: 1px solid rgba(201,160,80,0.18);
+    border-radius: 18px;
+    padding: 32px 24px 28px;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.04);
+    animation: cardSlide 0.7s cubic-bezier(0.16,1,0.3,1) both;
+  }
+  @keyframes cardSlide { from { opacity:0; transform: translateY(28px); } to { opacity:1; transform: translateY(0); } }
+
+  .card-label {
+    font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--gold); font-weight: 600; margin-bottom: 14px; text-align: center;
+  }
+
+  /* ─── INPUT ROW ─── */
+  .input-wrap {
+    position: relative; margin-bottom: 14px;
+  }
+  .input-wrap i {
+    position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+    color: var(--text-dim); font-size: 14px; pointer-events: none;
+    transition: color 0.3s;
+  }
+  .input-wrap:focus-within i { color: var(--gold); }
+  input {
+    width: 100%; padding: 15px 16px 15px 44px;
+    background: var(--panel-light);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 12px;
+    color: var(--white); font-family: 'Rajdhani', sans-serif;
+    font-size: 16px; font-weight: 500; outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  input::placeholder { color: var(--text-dim); font-weight: 400; }
+  input:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px var(--gold-dim);
+  }
+
+  /* ─── BUTTON ─── */
+  .btn {
+    width: 100%; padding: 15px;
+    background: linear-gradient(135deg, #1e3a8a 0%, #1a2a6c 50%, #14215a 100%);
+    border: 1px solid rgba(201,160,80,0.3);
+    border-radius: 12px;
+    color: var(--white); font-family: 'Rajdhani', sans-serif;
+    font-size: 13px; font-weight: 700; letter-spacing: 3.5px;
+    text-transform: uppercase; cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.3s, border-color 0.3s;
+    position: relative; overflow: hidden;
+  }
+  .btn::before {
+    content: ''; position: absolute;
+    top: 0; left: -100%; width: 60%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+    transition: left 0.5s;
+  }
+  .btn:hover::before { left: 140%; }
+  .btn:hover {
+    border-color: var(--gold);
+    box-shadow: 0 4px 24px rgba(26,42,108,0.5), 0 0 12px var(--gold-dim);
+  }
+  .btn:active { transform: scale(0.975); }
+
+  /* ─── RESULT ─── */
+  #result {
+    margin-top: 22px;
+    display: none;
+    animation: fadeUp 0.45s cubic-bezier(0.16,1,0.3,1) both;
+  }
+  @keyframes fadeUp { from { opacity:0; transform: translateY(10px); } to { opacity:1; transform: translateY(0); } }
+
+  .result-error {
+    text-align: center; padding: 22px 0 8px;
+    color: #ef4444; font-size: 14px; font-weight: 500; letter-spacing: 0.5px;
+  }
+  .result-error i { display: block; font-size: 28px; margin-bottom: 10px; color: #ef4444; opacity: 0.7; }
+
+  /* Result rows */
+  .res-row {
+    display: flex; align-items: flex-start; gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .res-row:last-of-type { border-bottom: none; }
+  .res-icon {
+    flex-shrink: 0; width: 38px; height: 38px;
+    background: var(--panel-light);
+    border: 1px solid rgba(201,160,80,0.2);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .res-icon i { color: var(--gold); font-size: 15px; }
+  .res-content { flex: 1; min-width: 0; }
+  .res-label {
+    font-size: 9px; letter-spacing: 2.2px; text-transform: uppercase;
+    color: var(--text-dim); font-weight: 600; margin-bottom: 3px;
+  }
+  .res-value {
+    font-size: 17px; font-weight: 600; color: var(--white);
+    display: flex; align-items: center; gap: 9px; flex-wrap: wrap;
+  }
+  .res-value .flag-img {
+    width: 26px; height: auto; border-radius: 3px;
+    border: 1px solid rgba(255,255,255,0.1);
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.4));
+  }
+
+  /* Committee badge */
+  .committee-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 5px 12px; border-radius: 20px;
+    font-size: 12px; font-weight: 600; letter-spacing: 1.2px;
+    text-transform: uppercase;
+  }
+  .badge-unsc { background: rgba(59,130,246,0.12); color: #60a5fa; border: 1px solid rgba(59,130,246,0.25); }
+  .badge-crisis { background: rgba(239,68,68,0.12); color: #f87171; border: 1px solid rgba(239,68,68,0.25); }
+  .badge-pna { background: rgba(16,185,129,0.12); color: #34d399; border: 1px solid rgba(16,185,129,0.25); }
+  .committee-badge i { font-size: 10px; }
+
+  /* Topic block */
+  .topic-block {
+    margin-top: 16px; padding: 16px 18px;
+    background: linear-gradient(135deg, rgba(201,160,80,0.07), rgba(201,160,80,0.02));
+    border: 1px solid rgba(201,160,80,0.15);
+    border-radius: 12px;
+    position: relative;
+  }
+  .topic-block::before {
+    content: '\201C'; font-family: 'Cormorant Garamond', serif;
+    font-size: 42px; color: var(--gold); opacity: 0.35;
+    position: absolute; top: -2px; left: 12px; line-height: 1;
+  }
+  .topic-label {
+    font-size: 8.5px; letter-spacing: 2.5px; text-transform: uppercase;
+    color: var(--gold); font-weight: 600; margin-bottom: 6px;
+  }
+  .topic-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px; font-style: italic; font-weight: 300;
+    color: var(--text); line-height: 1.5; padding-left: 6px;
+  }
+
+  /* ─── FOOTER ─── */
+  .footer {
+    margin-top: 36px; text-align: center;
+    font-size: 11px; color: var(--text-dim); letter-spacing: 1.5px;
+  }
+  .footer span { opacity: 0.5; }
+
+</style>
 </head>
 <body>
 
-<div class="portal-card">
-  <h2>The Secretariat</h2>
-  <div class="line"></div>
-  <p class="subtitle">Official Delegate Allocation Search</p>
-  <input type="text" id="nameInput" placeholder="Enter Full Name..." onkeypress="if(event.key==='Enter') executeSearch()">
-  <button onclick="executeSearch()">REVEAL ALLOCATION</button>
-  <div id="result"></div>
+<!-- Ambient orbs -->
+<div class="bg-orb orb-1"></div>
+<div class="bg-orb orb-2"></div>
+<div class="bg-orb orb-3"></div>
+
+<div class="page">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-crest"><i class="fas fa-globe"></i></div>
+    <h1>Peshawar MUN</h1>
+    <div class="divider"></div>
+    <p class="sub">Delegate Allocation Portal</p>
+  </div>
+
+  <!-- Card -->
+  <div class="card">
+    <div class="card-label">The Secretariat</div>
+
+    <div class="input-wrap">
+      <i class="fas fa-search"></i>
+      <input type="text" id="nameInput" placeholder="Enter your full name…" onkeypress="if(event.key==='Enter') executeSearch()" autocomplete="off" spellcheck="false">
+    </div>
+
+    <button class="btn" onclick="executeSearch()">
+      <i class="fas fa-unlock-alt" style="margin-right:8px;font-size:11px;"></i>Reveal Allocation
+    </button>
+
+    <div id="result"></div>
+  </div>
+
+  <div class="footer"><span>© 2025 Peshawar Model United Nations</span></div>
 </div>
 
+<!-- ═══════════════════════════════════════════════════════
+     DATA — every delegate preserved exactly as original
+     ═══════════════════════════════════════════════════════ -->
 <script>
-  const flags = {
-    "United States": "us", "United Kingdom": "gb", "France": "fr", "Germany": "de", "India": "in",
-    "Japan": "jp", "Turkey": "tr", "Brazil": "br", "Saudi Arabia": "sa", "South Africa": "za",
-    "Indonesia": "id", "Mexico": "mx", "UAE": "ae", "Spain": "es", "Norway": "no", "Egypt": "eg",
-    "Italy": "it", "Argentina": "ar", "Netherlands": "nl", "Canada": "ca", "Israel": "il",
-    "Palestine": "ps", "Syria": "sy", "Yemen": "ye", "Iraq": "iq", "Iran": "ir", "China": "cn",
-    "Russia": "ru", "Pakistan": "pk", "Australia": "au", "Sweden": "se", "Philippines": "ph", 
-    "Kuwait": "kw", "Qatar": "qa", "Oman": "om", "Jordan": "jo", "Lebanon": "lb", "Sudan": "sd", 
-    "Ukraine": "ua", "Vietnam": "vn", "Bahrain": "bh", "Belgium": "be", "Denmark": "dk", 
-    "Malaysia": "my", "Afghanistan": "af"
-  };
+const flags = {
+  "United States":"us","United Kingdom":"gb","France":"fr","Germany":"de","India":"in",
+  "Japan":"jp","Turkey":"tr","Brazil":"br","Saudi Arabia":"sa","South Africa":"za",
+  "Indonesia":"id","Mexico":"mx","UAE":"ae","Spain":"es","Norway":"no","Egypt":"eg",
+  "Italy":"it","Argentina":"ar","Netherlands":"nl","Canada":"ca","Israel":"il",
+  "Palestine":"ps","Syria":"sy","Yemen":"ye","Iraq":"iq","Iran":"ir","China":"cn",
+  "Russia":"ru","Pakistan":"pk","Australia":"au","Sweden":"se","Philippines":"ph",
+  "Kuwait":"kw","Qatar":"qa","Oman":"om","Jordan":"jo","Lebanon":"lb","Sudan":"sd",
+  "Ukraine":"ua","Vietnam":"vn","Bahrain":"bh","Belgium":"be","Denmark":"dk",
+  "Malaysia":"my","Afghanistan":"af"
+};
 
-  const topics = {
-    "UNSC": "The Escalating Conflict between Israel and Iran",
-    "PNA": "Strengthening Civilian Supremacy and Parliamentary Oversight in Pakistan",
-    "CRISIS": "Redrawing the Map: Russia’s Bid to Reshape Eurasia"
-  };
+const topics = {
+  "UNSC":"The Escalating Conflict between Israel and Iran",
+  "PNA":"Strengthening Civilian Supremacy and Parliamentary Oversight in Pakistan",
+  "CRISIS":"Redrawing the Map: Russia's Bid to Reshape Eurasia"
+};
 
-  const delegates = [
-    // CRISIS (Updated)
-    {n: "Khushbakht", c: "Russia", cm: "CRISIS"},
-    {n: "Mashaal Ahmed", c: "Russia", cm: "CRISIS"},
-    {n: "Manha Ahmed", c: "United States", cm: "CRISIS"},
-    {n: "Twaha", c: "Germany", cm: "CRISIS"},
-    {n: "Hanzala", c: "Germany", cm: "CRISIS"},
-    {n: "Hamza", c: "Germany", cm: "CRISIS"},
-    {n: "Mustafa Shah", c: "China", cm: "CRISIS"},
-    {n: "Numair Ahmed", c: "United Kingdom", cm: "CRISIS"},
-    {n: "Maria Faisal", c: "France", cm: "CRISIS"},
-    {n: "Heela Khan", c: "Ukraine", cm: "CRISIS"},
+const delegates = [
+  // ── CRISIS ──
+  {n:"Khushbakht",            c:"Russia",                       cm:"CRISIS"},
+  {n:"Mashaal Ahmed",        c:"Russia",                       cm:"CRISIS"},
+  {n:"Manha Ahmed",          c:"United States",                cm:"CRISIS"},
+  {n:"Twaha",                c:"Germany",                      cm:"CRISIS"},
+  {n:"Hanzala",              c:"Germany",                      cm:"CRISIS"},
+  {n:"Hamza",                c:"Germany",                      cm:"CRISIS"},
+  {n:"Mustafa Shah",         c:"China",                        cm:"CRISIS"},
+  {n:"Numair Ahmed",         c:"United Kingdom",               cm:"CRISIS"},
+  {n:"Maria Faisal",         c:"France",                       cm:"CRISIS"},
+  {n:"Heela Khan",           c:"Ukraine",                      cm:"CRISIS"},
 
-    // UNSC
-    {n: "Musa Khan Jamil", c: "United States", cm: "UNSC"},
-    {n: "Azaan Usman", c: "United Kingdom", cm: "UNSC"},
-    {n: "Ansar Asad", c: "Norway", cm: "UNSC"},
-    {n: "Hira Afzal Marwat", c: "Germany", cm: "UNSC"},
-    {n: "Wadana Malik", c: "Kuwait", cm: "UNSC"},
-    {n: "Eman Khan", c: "Japan", cm: "UNSC"},
-    {n: "Maleeha Bahrmand", c: "Turkey", cm: "UNSC"},
-    {n: "Ayesha Ahmad", c: "Brazil", cm: "UNSC"},
-    {n: "Zara Shahid", c: "Saudi Arabia", cm: "UNSC"},
-    {n: "Syeda Alisha", c: "South Africa", cm: "UNSC"},
-    {n: "Syeda Najam ul Sahar", c: "Indonesia", cm: "UNSC"},
-    {n: "Alina Aqdas", c: "Mexico", cm: "UNSC"},
-    {n: "Muhammad Babar Ali Khan", c: "UAE", cm: "UNSC"},
-    {n: "Qazi Muhammad Musa", c: "Spain", cm: "UNSC"},
-    {n: "Abiha Saeed", c: "France", cm: "UNSC"},
-    {n: "Sana Mehmood", c: "Egypt", cm: "UNSC"},
-    {n: "Zainab Hammad", c: "Italy", cm: "UNSC"},
-    {n: "Fatima Zahid", c: "Argentina", cm: "UNSC"},
-    {n: "Urooj Qazi", c: "Israel", cm: "UNSC"},
-    {n: "Ali Khan Rehman", c: "Palestine", cm: "UNSC"},
-    {n: "Muhammad Shafi", c: "Syria", cm: "UNSC"},
-    {n: "Sayyeda Urooa Jan", c: "Yemen", cm: "UNSC"},
-    {n: "Muhammad Rayyan Khan", c: "Iraq", cm: "UNSC"},
-    {n: "Abdullah Khan", c: "Iran", cm: "UNSC"},
-    {n: "Muhammad Affan Khan", c: "China", cm: "UNSC"},
-    {n: "Haris Mehmood", c: "Russia", cm: "UNSC"},
-    {n: "Muhammad Mohid Mansoor", c: "Pakistan", cm: "UNSC"},
-    {n: "Muhammad bin Ahsan", c: "Australia", cm: "UNSC"},
-    {n: "Rahima Waqas", c: "Sweden", cm: "UNSC"},
-    {n: "Maham Naveed", c: "Philippines", cm: "UNSC"},
-    {n: "Zainab Hammad", c: "Qatar", cm: "UNSC"},
-    {n: "Fatima Zahid", c: "Qatar", cm: "UNSC"},
-    {n: "Eshal Waqas", c: "Oman", cm: "UNSC"},
-    {n: "Hareem Khan", c: "Oman", cm: "UNSC"},
-    {n: "Maham Khan", c: "Oman", cm: "UNSC"},
-    {n: "Khirad Parsa", c: "Oman", cm: "UNSC"},
-    {n: "Sama Safdar", c: "Oman", cm: "UNSC"},
-    {n: "Haroon", c: "Jordan", cm: "UNSC"},
-    {n: "Ibrahim (Sr I)", c: "Jordan", cm: "UNSC"},
-    {n: "Hamza (nowshera)", c: "Jordan", cm: "UNSC"},
-    {n: "Ahmad Kamran", c: "Jordan", cm: "UNSC"},
-    {n: "Abdullah Haider", c: "Jordan", cm: "UNSC"},
-    {n: "Anooshay", c: "Lebanon", cm: "UNSC"},
-    {n: "Sara", c: "Lebanon", cm: "UNSC"},
-    {n: "Fatima (Sr I)", c: "Lebanon", cm: "UNSC"},
-    {n: "Eshal (Sr I)", c: "Lebanon", cm: "UNSC"},
-    {n: "Ishmal", c: "Lebanon", cm: "UNSC"},
-    {n: "Araiz", c: "Sudan", cm: "UNSC"},
-    {n: "Muhammad Ahmad", c: "Sudan", cm: "UNSC"},
-    {n: "Inzala", c: "Sudan", cm: "UNSC"},
-    {n: "Brishna", c: "Sudan", cm: "UNSC"},
-    {n: "Hania", c: "Sudan", cm: "UNSC"},
-    {n: "Ayan Waqas", c: "Ukraine", cm: "UNSC"},
-    {n: "Umar Khan", c: "Ukraine", cm: "UNSC"},
-    {n: "Hussain", c: "Ukraine", cm: "UNSC"},
-    {n: "Subhan", c: "Ukraine", cm: "UNSC"},
-    {n: "Ibrahim (Prep III)", c: "Ukraine", cm: "UNSC"},
-    {n: "Behraam Shah", c: "Bahrain", cm: "UNSC"},
-    {n: "Afnan Ashraf", c: "Belgium", cm: "UNSC"},
-    {n: "Areesha Rehman", c: "Denmark", cm: "UNSC"},
-    {n: "Hareem Fawad", c: "India", cm: "UNSC"},
-    {n: "Afnan KHAN", c: "Malaysia", cm: "UNSC"},
-    {n: "Syed Hamza", c: "Netherlands", cm: "UNSC"},
-    {n: "Abdul Mohemin", c: "Afghanistan", cm: "UNSC"},
+  // ── UNSC ──
+  {n:"Musa Khan Jamil",           c:"United States",           cm:"UNSC"},
+  {n:"Azaan Usman",               c:"United Kingdom",          cm:"UNSC"},
+  {n:"Ansar Asad",                c:"Norway",                  cm:"UNSC"},
+  {n:"Hira Afzal Marwat",         c:"Germany",                 cm:"UNSC"},
+  {n:"Wadana Malik",              c:"Kuwait",                  cm:"UNSC"},
+  {n:"Eman Khan",                 c:"Japan",                   cm:"UNSC"},
+  {n:"Maleeha Bahrmand",          c:"Turkey",                  cm:"UNSC"},
+  {n:"Ayesha Ahmad",              c:"Brazil",                  cm:"UNSC"},
+  {n:"Zara Shahid",               c:"Saudi Arabia",            cm:"UNSC"},
+  {n:"Syeda Alisha",              c:"South Africa",            cm:"UNSC"},
+  {n:"Syeda Najam ul Sahar",      c:"Indonesia",               cm:"UNSC"},
+  {n:"Alina Aqdas",               c:"Mexico",                  cm:"UNSC"},
+  {n:"Muhammad Babar Ali Khan",   c:"UAE",                     cm:"UNSC"},
+  {n:"Qazi Muhammad Musa",        c:"Spain",                   cm:"UNSC"},
+  {n:"Abiha Saeed",               c:"France",                  cm:"UNSC"},
+  {n:"Sana Mehmood",              c:"Egypt",                   cm:"UNSC"},
+  {n:"Zainab Hammad",             c:"Italy",                   cm:"UNSC"},
+  {n:"Fatima Zahid",              c:"Argentina",               cm:"UNSC"},
+  {n:"Urooj Qazi",                c:"Israel",                  cm:"UNSC"},
+  {n:"Ali Khan Rehman",           c:"Palestine",               cm:"UNSC"},
+  {n:"Muhammad Shafi",            c:"Syria",                   cm:"UNSC"},
+  {n:"Sayyeda Urooa Jan",         c:"Yemen",                   cm:"UNSC"},
+  {n:"Muhammad Rayyan Khan",      c:"Iraq",                    cm:"UNSC"},
+  {n:"Abdullah Khan",             c:"Iran",                    cm:"UNSC"},
+  {n:"Muhammad Affan Khan",       c:"China",                   cm:"UNSC"},
+  {n:"Haris Mehmood",             c:"Russia",                  cm:"UNSC"},
+  {n:"Muhammad Mohid Mansoor",    c:"Pakistan",                cm:"UNSC"},
+  {n:"Muhammad bin Ahsan",        c:"Australia",               cm:"UNSC"},
+  {n:"Rahima Waqas",              c:"Sweden",                  cm:"UNSC"},
+  {n:"Maham Naveed",              c:"Philippines",             cm:"UNSC"},
+  {n:"Zainab Hammad",             c:"Qatar",                   cm:"UNSC"},
+  {n:"Fatima Zahid",              c:"Qatar",                   cm:"UNSC"},
+  {n:"Eshal Waqas",               c:"Oman",                    cm:"UNSC"},
+  {n:"Hareem Khan",               c:"Oman",                    cm:"UNSC"},
+  {n:"Maham Khan",                c:"Oman",                    cm:"UNSC"},
+  {n:"Khirad Parsa",              c:"Oman",                    cm:"UNSC"},
+  {n:"Sama Safdar",               c:"Oman",                    cm:"UNSC"},
+  {n:"Haroon",                    c:"Jordan",                  cm:"UNSC"},
+  {n:"Ibrahim (Sr I)",            c:"Jordan",                  cm:"UNSC"},
+  {n:"Hamza (nowshera)",          c:"Jordan",                  cm:"UNSC"},
+  {n:"Ahmad Kamran",              c:"Jordan",                  cm:"UNSC"},
+  {n:"Abdullah Haider",           c:"Jordan",                  cm:"UNSC"},
+  {n:"Anooshay",                  c:"Lebanon",                 cm:"UNSC"},
+  {n:"Sara",                      c:"Lebanon",                 cm:"UNSC"},
+  {n:"Fatima (Sr I)",             c:"Lebanon",                 cm:"UNSC"},
+  {n:"Eshal (Sr I)",              c:"Lebanon",                 cm:"UNSC"},
+  {n:"Ishmal",                    c:"Lebanon",                 cm:"UNSC"},
+  {n:"Araiz",                     c:"Sudan",                   cm:"UNSC"},
+  {n:"Muhammad Ahmad",            c:"Sudan",                   cm:"UNSC"},
+  {n:"Inzala",                    c:"Sudan",                   cm:"UNSC"},
+  {n:"Brishna",                   c:"Sudan",                   cm:"UNSC"},
+  {n:"Hania",                     c:"Sudan",                   cm:"UNSC"},
+  {n:"Ayan Waqas",                c:"Ukraine",                 cm:"UNSC"},
+  {n:"Umar Khan",                 c:"Ukraine",                 cm:"UNSC"},
+  {n:"Hussain",                   c:"Ukraine",                 cm:"UNSC"},
+  {n:"Subhan",                    c:"Ukraine",                 cm:"UNSC"},
+  {n:"Ibrahim (Prep III)",        c:"Ukraine",                 cm:"UNSC"},
+  {n:"Behraam Shah",              c:"Bahrain",                 cm:"UNSC"},
+  {n:"Afnan Ashraf",              c:"Belgium",                 cm:"UNSC"},
+  {n:"Areesha Rehman",            c:"Denmark",                 cm:"UNSC"},
+  {n:"Hareem Fawad",              c:"India",                   cm:"UNSC"},
+  {n:"Afnan KHAN",                c:"Malaysia",                cm:"UNSC"},
+  {n:"Syed Hamza",                c:"Netherlands",             cm:"UNSC"},
+  {n:"Abdul Mohemin",             c:"Afghanistan",             cm:"UNSC"},
 
-    // PNA
-    {n: "Zargay Khan", c: "Nawaz Sharif", cm: "PNA"},
-    {n: "Musab Mahar", c: "Shehbaz Sharif", cm: "PNA"},
-    {n: "Eshal Zubair", c: "Bilawal Bhutto Zardari", cm: "PNA"},
-    {n: "Adan Khalid", c: "Syed Murad Ali Shah", cm: "PNA"},
-    {n: "Muhammad Yousaf", c: "Shah Mahmood Qureshi", cm: "PNA"},
-    {n: "Mian Muhammad Ahyan Khan", c: "Asad Umar", cm: "PNA"},
-    {n: "Sannan Majeed", c: "Imran Khan", cm: "PNA"},
-    {n: "Babur Hassan", c: "Khawaja Asif", cm: "PNA"},
-    {n: "Azmar Khan", c: "Fawad Chaudhry", cm: "PNA"},
-    {n: "Arbab AbdurRehman Khan", c: "Asif Ali Zardari", cm: "PNA"},
-    {n: "Muhammad Umar Khan", c: "Ali Amin Gandapur", cm: "PNA"},
-    {n: "Muhammad Ayan Shahid Shams", c: "Hamza Shahbaz", cm: "PNA"},
-    {n: "Eshal Babar", c: "Maryam Nawaz", cm: "PNA"},
-    {n: "Ehsan Javed", c: "Attaullah Tarar", cm: "PNA"},
-    {n: "Sudais", c: "Murad Saeed", cm: "PNA"},
-    {n: "Sinan", c: "Murad Saeed", cm: "PNA"},
-    {n: "Huzaifa", c: "Murad Saeed", cm: "PNA"},
-    {n: "Umar Jamal", c: "Murad Saeed", cm: "PNA"},
-    {n: "Azan", c: "Faisal Karim Kundi", cm: "PNA"},
-    {n: "Ahmed Shah", c: "Faisal Karim Kundi", cm: "PNA"},
-    {n: "Rayyan", c: "Faisal Karim Kundi", cm: "PNA"},
-    {n: "Haseeb Durrani", c: "General Faiz Hameed", cm: "PNA"},
-    {n: "Nasim Pakhtoonyar", c: "Parvez Khattak", cm: "PNA"},
-    {n: "Azlan Waqar", c: "Rana Sanaullah", cm: "PNA"},
-    {n: "Muhammad Sudais", c: "Saad Rafique", cm: "PNA"}
-  ];
+  // ── PNA ──
+  {n:"Zargay Khan",                 c:"Nawaz Sharif",                cm:"PNA"},
+  {n:"Musab Mahar",                 c:"Shehbaz Sharif",              cm:"PNA"},
+  {n:"Eshal Zubair",                c:"Bilawal Bhutto Zardari",      cm:"PNA"},
+  {n:"Adan Khalid",                 c:"Syed Murad Ali Shah",         cm:"PNA"},
+  {n:"Muhammad Yousaf",             c:"Shah Mahmood Qureshi",        cm:"PNA"},
+  {n:"Mian Muhammad Ahyan Khan",    c:"Asad Umar",                   cm:"PNA"},
+  {n:"Sannan Majeed",               c:"Imran Khan",                  cm:"PNA"},
+  {n:"Babur Hassan",                c:"Khawaja Asif",                cm:"PNA"},
+  {n:"Azmar Khan",                  c:"Fawad Chaudhry",              cm:"PNA"},
+  {n:"Arbab AbdurRehman Khan",      c:"Asif Ali Zardari",            cm:"PNA"},
+  {n:"Muhammad Umar Khan",          c:"Ali Amin Gandapur",           cm:"PNA"},
+  {n:"Muhammad Ayan Shahid Shams",  c:"Hamza Shahbaz",               cm:"PNA"},
+  {n:"Eshal Babar",                 c:"Maryam Nawaz",                cm:"PNA"},
+  {n:"Ehsan Javed",                 c:"Attaullah Tarar",              cm:"PNA"},
+  {n:"Sudais",                      c:"Murad Saeed",                 cm:"PNA"},
+  {n:"Sinan",                       c:"Murad Saeed",                 cm:"PNA"},
+  {n:"Huzaifa",                     c:"Murad Saeed",                 cm:"PNA"},
+  {n:"Umar Jamal",                  c:"Murad Saeed",                 cm:"PNA"},
+  {n:"Azan",                        c:"Faisal Karim Kundi",          cm:"PNA"},
+  {n:"Ahmed Shah",                  c:"Faisal Karim Kundi",          cm:"PNA"},
+  {n:"Rayyan",                      c:"Faisal Karim Kundi",          cm:"PNA"},
+  {n:"Haseeb Durrani",              c:"General Faiz Hameed",         cm:"PNA"},
+  {n:"Nasim Pakhtoonyar",           c:"Parvez Khattak",              cm:"PNA"},
+  {n:"Azlan Waqar",                 c:"Rana Sanaullah",               cm:"PNA"},
+  {n:"Muhammad Sudais",             c:"Saad Rafique",                cm:"PNA"}
+];
 
-  function executeSearch() {
-    const input = document.getElementById('nameInput').value.toLowerCase().trim();
-    const resDiv = document.getElementById('result');
-    if (input.length < 2) return;
-    const found = delegates.find(d => d.n.toLowerCase().includes(input));
-    resDiv.style.display = 'block';
-    if (found) {
-      const flagCode = flags[found.c];
-      const flagHtml = flagCode ? `<img class="flag-img" src="https://flagcdn.com/w40/${flagCode}.png">` : `<i class="fa-solid fa-user-tie comm-icon"></i>`;
-      resDiv.innerHTML = `
-        <div class="label">Delegate</div><div class="val"><i class="fa-solid fa-id-card comm-icon"></i> ${found.n}</div>
-        <div class="label">Country / Portfolio</div><div class="val">${flagHtml} ${found.c}</div>
-        <div class="label">Committee</div><div class="val"><i class="fa-solid fa-building-columns comm-icon"></i> ${found.cm}</div>
-        <div class="topic-box">${topics[found.cm]}</div>`;
-    } else {
-      resDiv.innerHTML = '<p style="color:red; text-align:center;">No record found.</p>';
-    }
+// ─── SEARCH LOGIC ───
+function executeSearch() {
+  const raw   = document.getElementById('nameInput').value.trim();
+  const input = raw.toLowerCase();
+  const res   = document.getElementById('result');
+
+  if (input.length < 2) { res.style.display = 'none'; return; }
+
+  // Find ALL matches (handles duplicates like Zainab Hammad or Fatima Zahid)
+  const matches = delegates.filter(d => d.n.toLowerCase().includes(input));
+
+  res.style.display = 'block';
+  res.style.animation = 'none';
+  void res.offsetWidth; // re-trigger
+  res.style.animation = 'fadeUp 0.45s cubic-bezier(0.16,1,0.3,1) both';
+
+  if (matches.length === 0) {
+    res.innerHTML = `<div class="result-error"><i class="fas fa-circle-exclamation"></i>No delegate record found.<br><span style="font-size:12px;color:#6b7a94;">Double-check your name and try again.</span></div>`;
+    return;
   }
+
+  let html = '';
+  matches.forEach((found, idx) => {
+    const isPNA     = found.cm === 'PNA';
+    const flagCode  = flags[found.c];
+    const flagHtml  = flagCode
+      ? `<img class="flag-img" src="https://flagcdn.com/w40/${flagCode}.png" alt="${found.c}">`
+      : `<i class="fas fa-user-tie" style="color:var(--gold);font-size:16px;"></i>`;
+
+    const badgeClass = found.cm === 'UNSC' ? 'badge-unsc' : found.cm === 'CRISIS' ? 'badge-crisis' : 'badge-pna';
+
+    html += `
+      ${matches.length > 1 && idx === 0 ? `<div style="font-size:11px;color:var(--gold);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid rgba(201,160,80,0.15);"><i class="fas fa-layer-group" style="margin-right:6px;"></i>${matches.length} allocation(s) found</div>` : ''}
+      ${matches.length > 1 ? `<div style="font-size:10px;color:var(--text-dim);letter-spacing:1.5px;text-transform:uppercase;margin-top:${idx > 0 ? '18px' : '0'};padding-top:${idx > 0 ? '14px' : '0'};border-top:${idx > 0 ? '1px solid rgba(255,255,255,0.06)' : 'none'};">Allocation #${idx + 1}</div>` : ''}
+
+      <div class="res-row">
+        <div class="res-icon"><i class="fas fa-id-card"></i></div>
+        <div class="res-content">
+          <div class="res-label">Delegate</div>
+          <div class="res-value">${found.n}</div>
+        </div>
+      </div>
+
+      <div class="res-row">
+        <div class="res-icon"><i class="fas fa-${isPNA ? 'user-tie' : 'globe'}"></i></div>
+        <div class="res-content">
+          <div class="res-label">${isPNA ? 'Portfolio' : 'Country'}</div>
+          <div class="res-value">${flagHtml} ${found.c}</div>
+        </div>
+      </div>
+
+      <div class="res-row" style="border-bottom:none;">
+        <div class="res-icon"><i class="fas fa-building-columns"></i></div>
+        <div class="res-content">
+          <div class="res-label">Committee</div>
+          <div class="res-value">
+            <span class="committee-badge ${badgeClass}">
+              <i class="fas fa-${found.cm === 'UNSC' ? 'shield-halved' : found.cm === 'CRISIS' ? 'bolt' : 'landmark'}"></i>${found.cm}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="topic-block">
+        <div class="topic-label">Discussion Topic</div>
+        <div class="topic-text">${topics[found.cm]}</div>
+      </div>
+    `;
+  });
+
+  res.innerHTML = html;
+}
 </script>
 </body>
 </html>
